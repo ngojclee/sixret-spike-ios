@@ -108,7 +108,7 @@ final class PhotoLibrary: ObservableObject {
         let filename = resource.originalFilename
         var buffer = Data()
         buffer.reserveCapacity(4 << 20)
-        return (try await withCheckedThrowingContinuation { cont in
+        let data: Data = try await withCheckedThrowingContinuation { cont in
             PHAssetResourceManager.default().requestData(
                 for: resource,
                 options: nil,
@@ -118,7 +118,8 @@ final class PhotoLibrary: ObservableObject {
                     else { cont.resume(returning: buffer) }
                 }
             )
-        }), filename)
+        }
+        return (data, filename)
     }
 }
 
