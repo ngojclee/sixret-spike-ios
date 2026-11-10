@@ -6,9 +6,11 @@ máy chính** vì S2/S4 xóa ảnh thật.
 
 ## Không có Mac? Build bằng GitHub Actions
 
-Mục này là đường chính nếu anh chỉ có Windows.
+Mục này là đường chính nếu anh chỉ có Windows. **Đã chạy thành công** — xem
+[run 42907038938](https://github.com/ngojclee/sixret-spike-ios/actions/runs/42907038938).
 
-1. Push repo này lên GitHub dạng **public** (standard macOS runner miễn phí).
+1. Repo public đã có: **https://github.com/ngojclee/sixret-spike-ios**
+   (standard macOS runner miễn phí cho repo public).
 2. Vào tab **Actions** → *Build iOS IPA* → **Run workflow** (hoặc tự chạy khi
    push `main`).
 3. Tải artifact `sixret-spike-ios` → giải nén được `Sixret-Spike-iOS.ipa`.
@@ -18,6 +20,9 @@ Mục này là đường chính nếu anh chỉ có Windows.
 
 Workflow ở [.github/workflows/ios-build.yml](.github/workflows/ios-build.yml),
 build không ký (`CODE_SIGNING_ALLOWED=NO`) rồi ký ad-hoc cho Sideloadly.
+
+Thông số bản build đầu tiên: bundle id `com.spike.SpikePhotoHide`, iOS 17.0,
+arm64, Xcode 26.5, build trong ~1 phút.
 
 > Lưu ý khi fork/chạy trên máy Windows: workflow này dùng runner `macos-26`.
 > Repo **private** thì macOS runner bị tính phí theo phút — dùng public như
