@@ -1,0 +1,18 @@
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.ipa
+
+# XcodeGen sinh từ project.yml — không commit
+SpikePhotoHide.xcodeproj/
+
+# Model: tải riêng, giấy phép khác nhau
+*.mlmodel
+*.mlmodelc
+*.mlpackage
+
+# macOS
+.DS_Store

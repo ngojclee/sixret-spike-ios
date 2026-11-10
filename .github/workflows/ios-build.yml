@@ -1,0 +1,64 @@
+# Build iOS IPA trên GitHub Actions — không cần Mac, không cần ký trước
+# Repo public dùng standard runner macOS → miễn phí.
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Repo public: chỉ cấp quyền đọc. Không cho workflow từ fork PR chạy
+# (bot spam / đào coin). Chỉ owner bấm "Run workflow" hoặc push vào main.
+permissions:
+  contents: read
+
+jobs:
+  build-ipa:
+    # macos-26 có Xcode 26.x. Nếu nhánh này lỗi, đổi tạm sang macos-15.
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build unsigned
+        run: |
+          xcodebuild build \
+            -project SpikePhotoHide.xcodeproj \
+            -scheme SpikePhotoHide \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app" -type d | head -1)
+          test -n "$APP" || { echo "Không tìm thấy .app"; exit 1; }
+          rm -rf Payload && mkdir Payload
+          cp -R "$APP" Payload/
+          # Ký ad-hoc để Sideloadly có sẵn chữ ký stub khi re-sign.
+          # Thiếu bước này một số máy/phiên bản Sideloadly từ chối IPA chưa ký.
+          codesign --force --deep --sign - "Payload/$(basename "$APP")" || true
+          zip -qry Sixret-Spike-iOS.ipa Payload
+          ls -lh Sixret-Spike-iOS.ipa
+          echo "--- bundle ---"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "Payload/$(basename "$APP")/Info.plist"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sixret-spike-ios
+          path: Sixret-Spike-iOS.ipa
+          retention-days: 30

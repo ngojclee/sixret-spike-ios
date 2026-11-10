@@ -1,0 +1,4 @@
+# Giữ nguyên LF khi commit từ Windows. Script trong workflow là shell —
+# CRLF sẽ làm runner macOS báo "bad interpreter".
+* text=auto eol=lf
+*.pbxproj text eol=lf

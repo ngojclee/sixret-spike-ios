@@ -1,0 +1,24 @@
+name: SpikePhotoHide
+options:
+  bundleIdPrefix: com.spike
+  deploymentTarget: "17.0"
+targets:
+  SpikePhotoHide:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: SpikePhotoHide
+        excludes:
+          - "Info.plist"
+    info:
+      path: SpikePhotoHide/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spike.SpikePhotoHide
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        # Không khai DEVELOPMENT_TEAM ở đây: máy CI build với
+        # CODE_SIGNING_ALLOWED=NO nên không cần; còn khi chạy Xcode local
+        # thì chọn team cá nhân trong Signing & Capabilities.
+        CODE_SIGN_STYLE: Automatic

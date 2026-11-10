@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>SpikePhotoHide</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Spike test: đọc thư viện ảnh để verify PHAssetChangeRequest.isHidden, delete và restore.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Spike test: tạo lại ảnh vào đúng album gốc khi restore.</string>
+	<key>UILaunchScreen</key>
+	<dict/>
+</dict>
+</plist>
