@@ -68,16 +68,10 @@ struct DeleteTestView: View {
         }
     }
 
-    /// Recently Deleted = smart album type 100000002? Không — dùng fetchAssetCollections
-    /// với subtype .smartAlbumRecentlyDeleted (iOS 16+ nằm sau Face ID).
+    /// Không có API đọc "Recently Deleted": nó là smart album hệ thống, khoá sau
+    /// Face ID và không expose qua PHAssetCollectionSubtype. Kiểm tra bằng mắt
+    /// trong app Photos — đó cũng là bằng chứng cần ghi vào report.
     private func checkRecentlyDeleted() {
-        let result = PHAssetCollection.fetchAssetCollections(
-            with: .smartAlbum, subtype: .smartAlbumRecentlyDeleted, options: nil)
-        if let rd = result.firstObject {
-            let count = PHAsset.fetchAssets(in: rd, options: nil).count
-            log.info("Recently Deleted đang có \(count) items")
-        } else {
-            log.info("Không fetch được Recently Deleted collection")
-        }
+        log.info("Recently Deleted: mở Photos → Albums → Recently Deleted (Face ID) để đếm bằng mắt")
     }
 }
